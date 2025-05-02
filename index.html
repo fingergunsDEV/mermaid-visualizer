@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mermaid Visualizer</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+      height: 200px;
+      font-family: monospace;
+    }
+
+    button {
+      background-color: #6200ea;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #3700b3;
+    }
+
+    .output {
+      margin-top: 2rem;
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+
+    .mermaid {
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      textarea {
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Mermaid Diagram Visualizer</h1>
+  <textarea id="mermaidInput">graph TD;
+  A[Site Root /] --> B[Products /products/];
+  B --> B1[Dashboards /products/dashboards/];
+  B1 --> B1a[Marketing Dashboard];
+  B1 --> B1b[SEO Dashboard];
+  B --> B2[SEO Tools];
+  B2 --> B2a[Schema Markup Builder];
+  B2 --> B2b[Keyword Tool];
+  </textarea>
+  <button id="renderBtn">Render Diagram</button>
+
+  <div class="output">
+    <div id="mermaidContainer" class="mermaid"></div>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({ startOnLoad: false });
+
+  document.getElementById('renderBtn').addEventListener('click', () => {
+    const code = document.getElementById('mermaidInput').value;
+    const container = document.getElementById('mermaidContainer');
+    container.innerHTML = code;
+    mermaid.init(undefined, container);
+  });
+
+  // Optional: render default example on load
+  window.addEventListener('load', () => {
+    document.getElementById('renderBtn').click();
+  });
+</script>
+
+</body>
+</html>
