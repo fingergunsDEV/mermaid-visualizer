@@ -63,16 +63,6 @@
       padding: 1rem;
       overflow-x: auto;
     }
-
-    .mermaid {
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 600px) {
-      textarea {
-        height: 150px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -86,29 +76,47 @@
   B1 --> B1b[SEO Dashboard];
   B --> B2[SEO Tools];
   B2 --> B2a[Schema Markup Builder];
-  B2 --> B2b[Keyword Tool];
-  </textarea>
+  B2 --> B2b[Keyword Tool];</textarea>
   <button id="renderBtn">Render Diagram</button>
 
-  <div class="output">
-    <div id="mermaidContainer" class="mermaid"></div>
+  <div class="output" id="mermaidContainer">
+    <!-- Mermaid diagram will render here -->
   </div>
 </div>
 
 <script>
+  // Initialize Mermaid (disable auto-start)
   mermaid.initialize({ startOnLoad: false });
 
-  document.getElementById('renderBtn').addEventListener('click', () => {
-    const code = document.getElementById('mermaidInput').value;
-    const container = document.getElementById('mermaidContainer');
-    container.innerHTML = code;
-    mermaid.init(undefined, container);
-  });
+  const renderBtn = document.getElementById('renderBtn');
+  const input = document.getElementById('mermaidInput');
+  const container = document.getElementById('mermaidContainer');
 
-  // Optional: render default example on load
-  window.addEventListener('load', () => {
-    document.getElementById('renderBtn').click();
-  });
+  async function renderMermaid() {
+    const code = input.value.trim();
+
+    // Clear previous render
+    container.innerHTML = '';
+
+    // Create a new div with Mermaid code
+    const graphDiv = document.createElement('div');
+    graphDiv.className = 'mermaid';
+    graphDiv.textContent = code;
+
+    container.appendChild(graphDiv);
+
+    try {
+      await mermaid.run({ nodes: [graphDiv] });
+    } catch (err) {
+      graphDiv.textContent = '⚠️ Error parsing Mermaid diagram';
+      console.error('Mermaid render error:', err);
+    }
+  }
+
+  renderBtn.addEventListener('click', renderMermaid);
+
+  // Render on page load
+  window.addEventListener('load', renderMermaid);
 </script>
 
 </body>
